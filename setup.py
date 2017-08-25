@@ -8,7 +8,7 @@ setup(
     name = "multihash",
     description = "wraps hashlib.hash instances for easily computing " + \
         "multiple hashes at the same time",
-    version = "0.0.1",
+    version = "1.0.0",
     long_description = readme(),
     author = "Brian Balsamo",
     author_email = "brian@brianbalsamo.com",
