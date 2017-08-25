@@ -1,5 +1,5 @@
 import unittest
-from multihash import MultiHash
+from multihash import MultiHash, new
 from tempfile import NamedTemporaryFile
 from os import urandom
 
@@ -52,6 +52,13 @@ class ReadMeTests(unittest.TestCase):
         r = MultiHash.from_flo(x, hashers=['md5', 'sha256']).hexdigest()
         self.assertTrue("md5" in r)
         self.assertTrue("sha256" in r)
+
+    def testNew(self):
+        x = MultiHash(hashers=['md5', 'sha256'])
+        y = new(x.name)
+        self.assertEqual(set(n.name for n in x.hashers),
+                         set(m.name for m in y.hashers))
+
 
 if __name__ == '__main__':
     unittest.main()

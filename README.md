@@ -1,11 +1,14 @@
 # MultiHash
-## v0.0.1
+
+[![Build Status](https://travis-ci.org/bnbalsamo/MultiHash.svg?branch=master)](https://travis-ci.org/bnbalsamo/MultiHash)[![Coverage Status](https://coveralls.io/repos/github/bnbalsamo/MultiHash/badge.svg?branch=master)](https://coveralls.io/github/bnbalsamo/MultiHash?branch=master)
+
+v0.0.1
 
 A convenience class for computing multiple hashes at the same time from a single source.
 
 This class optimizes disk reads per computation, but does not implement threading or multiprocessing.
 
-Provides the [same interface as hashlib.hash classes](https://docs.python.org/3/library/hashlib.html#hashlib.hash.digest_size) with properties returning dictionaries of results using the hash's name as the key, excluding .name, which returns a set of the names. Methods operate on all the embedded hashers in series. 
+Provides the [same interface as hashlib.hash classes](https://docs.python.org/3/library/hashlib.html#hashlib.hash.digest_size) with properties returning dictionaries of results using the hash's name as the key, excluding .name, which returns a MultiHash specific name, usable with ```multihash.new()```. 
 
 The class provides an ```additional_hashers``` set where other classes conforming the hashlib.hash interface, or classes which override existing hashlib.hash classes functionalities may be placed in order for instances of MultiHash to utilize them.
 
