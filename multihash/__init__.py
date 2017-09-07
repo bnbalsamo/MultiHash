@@ -1,7 +1,7 @@
 from hashlib import new as _new
 from json import loads, dumps
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 additional_hashers = set()
 

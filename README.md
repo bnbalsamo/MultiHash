@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/bnbalsamo/MultiHash.svg?branch=master)](https://travis-ci.org/bnbalsamo/MultiHash)[![Coverage Status](https://coveralls.io/repos/github/bnbalsamo/MultiHash/badge.svg?branch=master)](https://coveralls.io/github/bnbalsamo/MultiHash?branch=master)
 
-v1.0.0
+v1.0.1
 
 A convenience class for computing multiple hashes at the same time from a single source.
 
