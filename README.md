@@ -1,8 +1,8 @@
 # MultiHash
 
-[![Build Status](https://travis-ci.org/bnbalsamo/MultiHash.svg?branch=master)](https://travis-ci.org/bnbalsamo/MultiHash)[![Coverage Status](https://coveralls.io/repos/github/bnbalsamo/MultiHash/badge.svg?branch=master)](https://coveralls.io/github/bnbalsamo/MultiHash?branch=master)
-
 v1.0.1
+
+[![Build Status](https://travis-ci.org/bnbalsamo/MultiHash.svg?branch=master)](https://travis-ci.org/bnbalsamo/MultiHash) [![Coverage Status](https://coveralls.io/repos/github/bnbalsamo/MultiHash/badge.svg?branch=master)](https://coveralls.io/github/bnbalsamo/MultiHash?branch=master)
 
 A convenience class for computing multiple hashes at the same time from a single source.
 
@@ -56,3 +56,6 @@ Computing the hash(es) of a stream/file like object/thing that implements ```.re
 >>> MultiHash.from_flo(x, hashers=['md5', 'sha256']).hexdigest()
 {'md5': 'bd5c3a82f88ed4d903f4c30a21b827b6', 'sha256': 'a799b79935c54af47704d3b8421c83989b0cbc4078dd5a94aa8036a4912ae27e'}
 ```
+
+# Author
+Brian Balsamo <brian@brianbalsamo.com>
