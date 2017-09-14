@@ -1,7 +1,14 @@
+"""
+multihash
+"""
+
 from hashlib import new as _new
 from json import loads, dumps
 
+__author__ = "Brian Balsamo"
+__email__ = "brian@brianbalsamo.com"
 __version__ = "1.0.1"
+
 
 additional_hashers = set()
 
@@ -31,6 +38,7 @@ class MultiHash:
     """
     A class which uses effecient disk reads to compute multiple hashes
     """
+
     def __init__(self, data=None, hashers=[]):
         """
         Create a new MultiHash instance

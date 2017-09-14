@@ -1,10 +1,28 @@
 import unittest
+import multihash
 from multihash import MultiHash, new
 from tempfile import NamedTemporaryFile
 from os import urandom
 
 
-class ReadMeTests(unittest.TestCase):
+class Tests(unittest.TestCase):
+    def setUp(self):
+        # Perform any setup that should occur
+        # before every test
+        pass
+
+    def tearDown(self):
+        # Perform any tear down that should
+        # occur after every test
+        pass
+
+    def testPass(self):
+        self.assertEqual(True, True)
+
+    def testVersionAvailable(self):
+        x = getattr(multihash, "__version__", None)
+        self.assertTrue(x is not None)
+
     def testRAM(self):
         self.assertEqual(
             MultiHash(b"This is a test", hashers=['md5', 'sha256']).hexdigest(),
@@ -40,15 +58,15 @@ class ReadMeTests(unittest.TestCase):
     def testFlo(self):
         class PretendStream:
             def __init__(self, streamlen):
-                    self.streamlen = streamlen
+                self.streamlen = streamlen
 
             def read(self, x):
-                    if self.streamlen < 1:
-                            return False
-                    self.streamlen = self.streamlen - x
-                    return urandom(x)
+                if self.streamlen < 1:
+                    return False
+                self.streamlen = self.streamlen - x
+                return urandom(x)
 
-        x = PretendStream(1024*50)
+        x = PretendStream(1024 * 50)
         r = MultiHash.from_flo(x, hashers=['md5', 'sha256']).hexdigest()
         self.assertTrue("md5" in r)
         self.assertTrue("sha256" in r)
@@ -60,5 +78,5 @@ class ReadMeTests(unittest.TestCase):
                          set(m.name for m in y.hashers))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
