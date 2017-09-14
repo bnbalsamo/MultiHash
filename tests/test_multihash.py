@@ -58,15 +58,15 @@ class Tests(unittest.TestCase):
     def testFlo(self):
         class PretendStream:
             def __init__(self, streamlen):
-                    self.streamlen = streamlen
+                self.streamlen = streamlen
 
             def read(self, x):
-                    if self.streamlen < 1:
-                            return False
-                    self.streamlen = self.streamlen - x
-                    return urandom(x)
+                if self.streamlen < 1:
+                    return False
+                self.streamlen = self.streamlen - x
+                return urandom(x)
 
-        x = PretendStream(1024*50)
+        x = PretendStream(1024 * 50)
         r = MultiHash.from_flo(x, hashers=['md5', 'sha256']).hexdigest()
         self.assertTrue("md5" in r)
         self.assertTrue("sha256" in r)

@@ -38,6 +38,7 @@ class MultiHash:
     """
     A class which uses effecient disk reads to compute multiple hashes
     """
+
     def __init__(self, data=None, hashers=[]):
         """
         Create a new MultiHash instance
