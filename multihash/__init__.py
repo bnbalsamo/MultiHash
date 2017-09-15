@@ -28,7 +28,7 @@ def new(hashname):
     try:
         for x in additional_hashers:
             if x.name == hashname:
-                return x
+                return x()
         raise ValueError("unsupported hash type {}".format(hashname))
     except ValueError:
         return _new(hashname)
