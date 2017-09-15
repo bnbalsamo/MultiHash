@@ -7,7 +7,7 @@ from json import loads, dumps
 
 __author__ = "Brian Balsamo"
 __email__ = "brian@brianbalsamo.com"
-__version__ = "1.0.3"
+__version__ = "1.1.0"
 
 
 additional_hashers = set()

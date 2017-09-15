@@ -1,6 +1,6 @@
 # MultiHash
 
-v1.0.3
+v1.1.0
 
 [![Build Status](https://travis-ci.org/bnbalsamo/MultiHash.svg?branch=master)](https://travis-ci.org/bnbalsamo/MultiHash) [![Coverage Status](https://coveralls.io/repos/github/bnbalsamo/MultiHash/badge.svg?branch=master)](https://coveralls.io/github/bnbalsamo/MultiHash?branch=master)
 
