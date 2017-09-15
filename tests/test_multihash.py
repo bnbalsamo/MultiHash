@@ -1,4 +1,5 @@
 import unittest
+import hashlib
 import multihash
 from multihash import MultiHash, new
 from tempfile import NamedTemporaryFile
@@ -22,6 +23,10 @@ class Tests(unittest.TestCase):
     def testVersionAvailable(self):
         x = getattr(multihash, "__version__", None)
         self.assertTrue(x is not None)
+
+    def testAvailableAlgorithms(self):
+        self.assertEqual(multihash.algorithms_available(),
+                         hashlib.algorithms_available)
 
     def testRAM(self):
         self.assertEqual(
