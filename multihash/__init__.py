@@ -2,7 +2,7 @@
 multihash
 """
 
-from hashlib import new as _new
+import hashlib
 from json import loads, dumps
 
 __author__ = "Brian Balsamo"
@@ -11,6 +11,10 @@ __version__ = "1.0.3"
 
 
 additional_hashers = set()
+
+
+def algorithms_available():
+    return hashlib.algorithms_available.union(set(x.name for x in additional_hashers))
 
 
 def new(hashname):
@@ -31,7 +35,7 @@ def new(hashname):
                 return x()
         raise ValueError("unsupported hash type {}".format(hashname))
     except ValueError:
-        return _new(hashname)
+        return hashlib.new(hashname)
 
 
 class MultiHash:
