@@ -8,7 +8,8 @@ def readme():
 
 setup(
     name="multihash",
-    description="A convenience class for computing multiple hashes at the same time from a single source.",
+    description="A convenience class for computing multiple hashes at the same time " +
+    "from a single source.",
     version="1.1.0",
     long_description=readme(),
     author="Brian Balsamo",
