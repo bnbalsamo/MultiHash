@@ -1,14 +1,19 @@
-# MultiHash
+# MultiHash [![v1.1.1](https://img.shields.io/badge/version-1.1.1-blue.svg)](https://github.com/bnbalsamo/MultiHash/releases)
 
-v1.1.1
+[![CI](https://github.com/bnbalsamo/MultiHash/workflows/CI/badge.svg?branch=master)](https://github.com/bnbalsamo/MultiHash/actions)
+[![Coverage](https://codecov.io/gh/bnbalsamo/MultiHash/branch/master/graph/badge.svg)](https://codecov.io/gh/bnbalsamo/MultiHash/)
+ [![Documentation Status](https://readthedocs.org/projects/MultiHash/badge/?version=latest)](http://MultiHash.readthedocs.io/en/latest/?badge=latest)
+[![Updates](https://pyup.io/repos/github/bnbalsamo/MultiHash/shield.svg)](https://pyup.io/repos/github/bnbalsamo/MultiHash/) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
-[![Build Status](https://travis-ci.org/bnbalsamo/MultiHash.svg?branch=master)](https://travis-ci.org/bnbalsamo/MultiHash) [![Coverage Status](https://coveralls.io/repos/github/bnbalsamo/MultiHash/badge.svg?branch=master)](https://coveralls.io/github/bnbalsamo/MultiHash?branch=master)
+wraps hashlib.hash instances for easily computing multiple hashes at the same time.
+
+See the full documentation at https://MultiHash.readthedocs.io
 
 A convenience class for computing multiple hashes at the same time from a single source.
 
 This class optimizes disk reads per computation, but does not implement threading or multiprocessing.
 
-Provides the [same interface as hashlib.hash classes](https://docs.python.org/3/library/hashlib.html#hashlib.hash.digest_size) with properties returning dictionaries of results using the hash's name as the key, excluding .name, which returns a MultiHash specific name, usable with ```multihash.new()```. 
+Provides the [same interface as hashlib.hash classes](https://docs.python.org/3/library/hashlib.html#hashlib.hash.digest_size) with properties returning dictionaries of results using the hash's name as the key, excluding .name, which returns a MultiHash specific name, usable with ```multihash.new()```.
 
 The class provides an ```additional_hashers``` set where other classes conforming the hashlib.hash interface, or classes which override existing hashlib.hash classes functionalities may be placed in order for instances of MultiHash to utilize them.
 
@@ -51,11 +56,68 @@ Computing the hash(es) of a stream/file like object/thing that implements ```.re
 ...                     return False
 ...             self.streamlen = self.streamlen - x
 ...             return urandom(x)
-... 
+...
 >>> x = PretendStream(1024*50)
 >>> MultiHash.from_flo(x, hashers=['md5', 'sha256']).hexdigest()
 {'md5': 'bd5c3a82f88ed4d903f4c30a21b827b6', 'sha256': 'a799b79935c54af47704d3b8421c83989b0cbc4078dd5a94aa8036a4912ae27e'}
 ```
 
+# Installation
+- ```$ git clone https://github.com/bnbalsamo/MultiHash.git```
+- ```$ cd MultiHash```
+    - If you would like to install the pinned dependencies, run ```pip install -r requirements.txt```
+- ```$ python -m pip install .```
+
+# Development
+
+## Quickstart
+
+To quickly install + configure a development environment...
+
+Install [pyenv](https://github.com/pyenv/pyenv), [pyenv-virtualenv](https://github.com/pyenv/pyenv-virtualenv),
+and [xxenv-latest](https://github.com/momo-lab/xxenv-latest) and copy the following into your terminal while
+in the repository root.
+
+```bash
+[[ `type -t pyenv` ]] && \
+[ -s "$PYENV_ROOT/plugins/pyenv-virtualenv" ] && \
+[ -s "$PYENV_ROOT/plugins/xxenv-latest" ] && \
+pyenv latest install -s 3.8 && \
+PYENV_LATEST_38=$(pyenv latest -p 3.8) && \
+pyenv latest install -s 3.7 && \
+PYENV_LATEST_37=$(pyenv latest -p 3.7) && \
+pyenv latest install -s 3.6 && \
+PYENV_LATEST_36=$(pyenv latest -p 3.6) && \
+pyenv virtualenv "$PYENV_LATEST_38" "MultiHash" && \
+pyenv local "MultiHash" "$PYENV_LATEST_38" "$PYENV_LATEST_37" "$PYENV_LATEST_36" && \
+pip install -e .[dev,tests,docs]
+```
+
+## Manual Configuration
+
+If you choose not to use the quickstart script you will need to...
+
+- Create a virtual environment
+- Install the development dependencies
+    - `pip install -e .[dev,tests,docs]`
+- Configure tox so that it can access all relevant python interpreters
+
+## Running Tests
+```
+$ inv run.tests
+```
+
+## Running autoformatters
+```
+$ inv run.autoformatters
+```
+
+## Pinning Dependencies
+```
+$ inv pindeps
+```
+
 # Author
-Brian Balsamo <brian@brianbalsamo.com>
+Brian Balsamo <Brian@BrianBalsamo.com>
+
+_Created using [bnbalsamo/cookiecutter-pypackage](https://github.com/bnbalsamo/cookiecutter-pypackage) v0.38.0_
