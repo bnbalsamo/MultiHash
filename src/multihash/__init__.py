@@ -6,7 +6,7 @@ Wraps hashlib.hash instances for easily computing multiple hashes at the same ti
 
 __author__ = "Brian Balsamo"
 __email__ = "Brian@BrianBalsamo.com"
-__version__ = "2.0.0"
+__version__ = "2.0.1"
 
 import hashlib
 from json import dumps

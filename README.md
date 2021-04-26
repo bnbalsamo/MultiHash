@@ -1,11 +1,11 @@
-# MultiHash [![v2.0.0](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/bnbalsamo/MultiHash/releases)
+# MultiHash [![v2.0.1](https://img.shields.io/badge/version-2.0.1-blue.svg)](https://github.com/bnbalsamo/MultiHash/releases)
 
 [![CI](https://github.com/bnbalsamo/MultiHash/workflows/CI/badge.svg?branch=master)](https://github.com/bnbalsamo/MultiHash/actions)
 [![Coverage](https://codecov.io/gh/bnbalsamo/MultiHash/branch/master/graph/badge.svg)](https://codecov.io/gh/bnbalsamo/MultiHash/)
  [![Documentation Status](https://readthedocs.org/projects/bnb-MultiHash/badge/?version=latest)](http://bnb-MultiHash.readthedocs.io/en/latest/?badge=latest)
 [![Updates](https://pyup.io/repos/github/bnbalsamo/MultiHash/shield.svg)](https://pyup.io/repos/github/bnbalsamo/MultiHash/) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
-wraps hashlib.hash instances for easily computing multiple hashes at the same time.
+Wraps hashlib.hash instances for easily computing multiple hashes at the same time.
 
 See the full documentation at https://bnb-MultiHash.readthedocs.io
 
@@ -13,7 +13,7 @@ A convenience class for computing multiple hashes at the same time from a single
 
 This class optimizes disk reads per computation, but does not implement threading or multiprocessing.
 
-Provides the [same interface as hashlib.hash classes](https://docs.python.org/3/library/hashlib.html#hashlib.hash.digest_size) with properties returning dictionaries of results using the hash's name as the key, excluding .name, which returns a MultiHash specific name, usable with ```multihash.new()```.
+Provides the [same interface as hashlib.hash classes](https://docs.python.org/3/library/hashlib.html#hashlib.hash.digest_size) with properties returning dictionaries of results using the hash's name as the key, excluding .name, which returns a MultiHash specific name.
 
 The class provides an ```additional_hashers``` set where other classes conforming the hashlib.hash interface, or classes which override existing hashlib.hash classes functionalities may be placed in order for instances of MultiHash to utilize them.
 
@@ -48,17 +48,8 @@ Computing the hash(es) of a file
 Computing the hash(es) of a stream/file like object/thing that implements ```.read()```
 ```
 >>> from os import urandom
->>> class PretendStream:
-...     def __init__(self, streamlen):
-...             self.streamlen = streamlen
-...     def read(self, x):
-...             if self.streamlen < 1:
-...                     return False
-...             self.streamlen = self.streamlen - x
-...             return urandom(x)
-...
->>> x = PretendStream(1024*50)
->>> MultiHash.from_flo(x, hashers=['md5', 'sha256']).hexdigest()
+>>> from io import BytesIO
+>>> MultiHash.from_Stream(BytesIO(urandom(256)), hashers=['md5', 'sha256']).hexdigest()
 {'md5': 'bd5c3a82f88ed4d903f4c30a21b827b6', 'sha256': 'a799b79935c54af47704d3b8421c83989b0cbc4078dd5a94aa8036a4912ae27e'}
 ```
 
