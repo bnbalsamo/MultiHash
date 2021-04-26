@@ -83,7 +83,7 @@ class MultiHash:
         cls,
         filepath: PathLike,
         hashers: Iterable[HasherType] = None,
-        chunksize: int = 2 ** 8,
+        chunksize: int = 128000000,  # 128MB
     ) -> "MultiHash":
         """
         Instantiate a new MultiHash and hash a file located at some file path.
@@ -101,7 +101,7 @@ class MultiHash:
         cls,
         stream: BinaryIO,
         hashers: Iterable[HasherType] = None,
-        chunksize: int = 2 ** 8,
+        chunksize: int = 128000000,  # 128MB
     ) -> "MultiHash":
         """
         Instantiate a new MultiHash and hash a .read()-able thing.
@@ -118,8 +118,12 @@ class MultiHash:
             chunk = stream.read(chunksize)
         return multihash
 
-    def _get_hashers(self) -> Iterable[HasherType]:
-        """Getter for _hashers."""
+    def _get_hashers(self) -> Set[HasherType]:
+        """
+        Return a set of all the contained "hashers".
+
+        :rtype set:
+        """
         return self._hashers
 
     def _set_hashers(self, hashers: Iterable[HasherType]) -> None:
@@ -142,7 +146,7 @@ class MultiHash:
         """
         Return a name for the MultiHash instance.
 
-        multihash.new() supports reading these names
+        :rtype: str
         """
         return "MultiHash{}".format(str(dumps([x.name for x in self.hashers])))
 
