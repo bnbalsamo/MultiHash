@@ -2,12 +2,12 @@
 
 [![CI](https://github.com/bnbalsamo/MultiHash/workflows/CI/badge.svg?branch=master)](https://github.com/bnbalsamo/MultiHash/actions)
 [![Coverage](https://codecov.io/gh/bnbalsamo/MultiHash/branch/master/graph/badge.svg)](https://codecov.io/gh/bnbalsamo/MultiHash/)
- [![Documentation Status](https://readthedocs.org/projects/MultiHash/badge/?version=latest)](http://MultiHash.readthedocs.io/en/latest/?badge=latest)
+ [![Documentation Status](https://readthedocs.org/projects/bnb-MultiHash/badge/?version=latest)](http://bnb-MultiHash.readthedocs.io/en/latest/?badge=latest)
 [![Updates](https://pyup.io/repos/github/bnbalsamo/MultiHash/shield.svg)](https://pyup.io/repos/github/bnbalsamo/MultiHash/) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
 wraps hashlib.hash instances for easily computing multiple hashes at the same time.
 
-See the full documentation at https://MultiHash.readthedocs.io
+See the full documentation at https://bnb-MultiHash.readthedocs.io
 
 A convenience class for computing multiple hashes at the same time from a single source.
 
