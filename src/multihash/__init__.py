@@ -11,7 +11,7 @@ __version__ = "1.1.1"
 import hashlib
 from json import dumps
 from os import PathLike
-from typing import Any, BinaryIO, Dict, Iterable, Optional, Set
+from typing import Any, BinaryIO, Dict, Iterable, Optional, Set, Union
 
 # There's some weirdness here wrt typing checking the Protocol import itself.
 # See https://github.com/python/mypy/issues/4427
@@ -25,7 +25,11 @@ except ImportError:  # Support python<3.8
 
 
 class HasherType(Protocol):  # pragma: no cover
-    """Protocol for "hashers"."""
+    """
+    Protocol for "hashers".
+
+    These are classes that actually compute the hashes.
+    """
 
     name: str
     digest_size: int
@@ -49,7 +53,12 @@ class HasherType(Protocol):  # pragma: no cover
 
 
 class HasherFactory(Protocol):  # pragma: no cover  # pylint: disable=R0903
-    """Protocol for "hasher factories"."""
+    """
+    Protocol for "hasher factories".
+
+    These are objects/functions that return instances that implement `HasherType`
+    when called, eg: `hashlib.md5`.
+    """
 
     def __call__(self, data: bytes = b"") -> HasherType:
         """Return a hasher."""
@@ -62,15 +71,14 @@ class MultiHash:
     def __init__(
         self,
         data: Optional[bytes] = None,
-        hashers: Optional[Iterable[HasherType]] = None,
+        hashers: Optional[Iterable[Union[HasherType, str]]] = None,
     ):
         """
         Create a new MultiHash instance.
 
-        :param bytes data: Binary data to seed all the hashers with
-        :param set hashers: Instances of classes conforming to the
+        :param data: Binary data to seed all the hashers with
+        :param hashers: Instances of classes conforming to the
             hashlib.hash interface, or names of hashes appropriate for `new()`
-        :param int chunksize: How many bytes to read into RAM at once
         """
         self._hashers: Set[HasherType] = set()
         if hashers is not None:
@@ -82,16 +90,16 @@ class MultiHash:
     def from_filepath(
         cls,
         filepath: PathLike,
-        hashers: Iterable[HasherType] = None,
+        hashers: Iterable[Union[HasherType, str]] = None,
         chunksize: int = 128000000,  # 128MB
     ) -> "MultiHash":
         """
         Instantiate a new MultiHash and hash a file located at some file path.
 
-        :param str filepath: A file path
-        :param set hashers: Instances of classes conforming to the
+        :param filepath: A file path
+        :param hashers: Instances of classes conforming to the
             hashlib.hash interface, or names of hashes appropriate for `new()`
-        :param int chunksize: How many bytes to read into RAM at once
+        :param chunksize: How many bytes to read into RAM at once
         """
         with open(filepath, "rb") as stream:
             return cls.from_stream(stream, hashers=hashers, chunksize=chunksize)
@@ -100,16 +108,16 @@ class MultiHash:
     def from_stream(
         cls,
         stream: BinaryIO,
-        hashers: Iterable[HasherType] = None,
+        hashers: Iterable[Union[HasherType, str]] = None,
         chunksize: int = 128000000,  # 128MB
     ) -> "MultiHash":
         """
         Instantiate a new MultiHash and hash a .read()-able thing.
 
         :param stream: An object which implements .read()
-        :param list hashers: Instances of classes conforming to the
+        :param hashers: Instances of classes conforming to the
             hashlib.hash interface
-        :param int chunksize: How many bytes to read into RAM at once
+        :param chunksize: How many bytes to read into RAM at once
         """
         multihash = cls(hashers=hashers)
         chunk = stream.read(chunksize)
@@ -119,14 +127,10 @@ class MultiHash:
         return multihash
 
     def _get_hashers(self) -> Set[HasherType]:
-        """
-        Return a set of all the contained "hashers".
-
-        :rtype set:
-        """
+        """Return a set of all the contained "hashers"."""
         return self._hashers
 
-    def _set_hashers(self, hashers: Iterable[HasherType]) -> None:
+    def _set_hashers(self, hashers: Iterable[Union[HasherType, str]]) -> None:
         """
         Set the _hashers attribute.
 
@@ -143,11 +147,7 @@ class MultiHash:
         self._hashers = set()
 
     def _get_name(self) -> str:
-        """
-        Return a name for the MultiHash instance.
-
-        :rtype: str
-        """
+        """Return a name for the MultiHash instance."""
         return "MultiHash{}".format(str(dumps([x.name for x in self.hashers])))
 
     def __repr__(self) -> str:
@@ -158,8 +158,7 @@ class MultiHash:
         """
         Update all the underlying hashes with the supplied data.
 
-        :param bytes data: The data to update the hashes with.
-        :rtype None:
+        :param data: The data to update the hashes with.
         """
         for hasher in self.hashers:
             hasher.update(data)
@@ -170,11 +169,10 @@ class MultiHash:
 
         Returns a dict, hasher names as keys, return values as values
         """
-        result = {}
-        for hasher in self.hashers:
-            method = getattr(hasher, method_name)
-            result.update({hasher.name: method(*args, **kwargs)})
-        return result
+        return {
+            hasher.name: getattr(hasher, method_name)(*args, **kwargs)
+            for hasher in self.hashers
+        }
 
     def _get_attr_from_all_hashers(self, attr_name: str) -> Dict[str, Any]:
         """
@@ -182,11 +180,7 @@ class MultiHash:
 
         Returns a dict, hasher names as keys, attr values as values
         """
-        result = {}
-        for hasher in self.hashers:
-            attr = getattr(hasher, attr_name)
-            result.update({hasher.name: attr})
-        return result
+        return {hasher.name: getattr(hasher, attr_name) for hasher in self.hashers}
 
     # For the rest of these see the hashlib.hash interface
     # https://docs.python.org/3/library/hashlib.html#hashlib.hash.digest_size
@@ -203,27 +197,15 @@ class MultiHash:
         return self._get_attr_from_all_hashers("block_size")
 
     def digest(self, *args, **kwargs) -> Dict[str, bytes]:
-        """
-        Return a dictionary containing all the digests.
-
-        :rtype dict:
-        """
+        """Return a dictionary containing all the digests."""
         return self._call_all_hashers("digest", *args, **kwargs)
 
     def hexdigest(self, *args, **kwargs) -> Dict[str, str]:
-        """
-        Return a dictionary containing all the hexdigests.
-
-        :rtype dict:
-        """
+        """Return a dictionary containing all the hexdigests."""
         return self._call_all_hashers("hexdigest", *args, **kwargs)
 
     def copy(self, *args, **kwargs) -> Dict[str, HasherType]:
-        """
-        Return a dictionary containing copies of all the hashers.
-
-        :rtype dict:
-        """
+        """Return a dictionary containing copies of all the hashers."""
         return self._call_all_hashers("copy", *args, **kwargs)
 
     hashers = property(_get_hashers, _set_hashers, _del_hashers)

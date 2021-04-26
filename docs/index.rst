@@ -10,7 +10,8 @@ Welcome to MultiHash's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   autodoc
+   apidoc
+   protocols
 
 
 
