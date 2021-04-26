@@ -1,3 +1,1 @@
-"""
-Unit tests for multihash
-"""
+"""Unit test module for MultiHash."""
