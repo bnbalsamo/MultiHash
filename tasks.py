@@ -95,17 +95,17 @@ def run_autoformatters(c, warn=True):
 
 
 @task(name="tests")
-def run_tests(c, autoformat=False, tox_args=None):
+def run_tests(c, autoformat=False, tox_args=None, warn=True):
     """
     Run the tests.
     """
     echo("Running tests...")
     if autoformat:
-        run_autoformatters(c)
+        run_autoformatters(c, warn=warn)
     cmd = "tox"
     if tox_args:
         cmd = cmd + " %s" % tox_args
-    c.run(cmd)
+    c.run(cmd, warn=warn)
     echo("Testing complete")
 
 
@@ -311,12 +311,12 @@ def build_wheelhouse(c, pindeps=True):
 
 
 @task(name="coverage-report")
-def build_coverage_report(c, test=True):
+def build_coverage_report(c, test=True, warn=True):
     """
     Build an HTML coverage report.
     """
     if test:
-        run_tests(c)
+        run_tests(c, warn=warn)
     echo("Creating coverage report...")
     c.run("coverage html")
     echo(f"Coverage report available at {str(Path('./htmlcov').resolve())}")
@@ -331,14 +331,14 @@ def check_todos(c):
 
 
 @task()
-def release(c, prod=False, clean=True, build=True, skip_tests=False, autoformat=True):
+def release(c, prod=False, clean=True, build=True, skip_tests=False, autoformat=True, warn=False):
     """
     Perform a release to pypi.
     """
     if autoformat:
-        run_autoformatters(c)
+        run_autoformatters(c, warn=warn)
     if not skip_tests:
-        run_tests(c)
+        run_tests(c, warn=warn)
     if clean:
         clean_dists(c)
     if build:
