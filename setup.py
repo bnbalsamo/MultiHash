@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 # Provided Package Metadata
 NAME = "multihash"
 DESCRIPTION = "wraps hashlib.hash instances for easily computing multiple hashes at the same time."
-VERSION = "2.0.0"
+VERSION = "2.0.1"
 AUTHOR = "Brian Balsamo"
 AUTHOR_EMAIL = "Brian@BrianBalsamo.com"
 URL = 'https://github.com/bnbalsamo/MultiHash'

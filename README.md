@@ -1,4 +1,4 @@
-# MultiHash [![v2.0.0](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/bnbalsamo/MultiHash/releases)
+# MultiHash [![v2.0.1](https://img.shields.io/badge/version-2.0.1-blue.svg)](https://github.com/bnbalsamo/MultiHash/releases)
 
 [![CI](https://github.com/bnbalsamo/MultiHash/workflows/CI/badge.svg?branch=master)](https://github.com/bnbalsamo/MultiHash/actions)
 [![Coverage](https://codecov.io/gh/bnbalsamo/MultiHash/branch/master/graph/badge.svg)](https://codecov.io/gh/bnbalsamo/MultiHash/)
