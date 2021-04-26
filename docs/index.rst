@@ -6,11 +6,15 @@
 Welcome to MultiHash's documentation!
 =========================================================
 
+MultiHash is a library that allows you to easily compute
+multiple hashes at the same time, minimizing disk reads.
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
    apidoc
+   cli
    protocols
 
 

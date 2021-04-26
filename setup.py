@@ -43,12 +43,11 @@ EXTRAS_REQUIRE = {
         "sphinx",
         "sphinx_rtd_theme",
         "sphinx-autodoc-typehints",
+        "sphinxcontrib-programoutput",
     ]
 }
 ENTRY_POINTS = {
-    # For CLI scripts, plugins, etc if required
-    # Ex:
-    # 'console_scripts': ['mycli=mymodule:cli'],
+    "console_scripts": ['multihash=multihash.cli:cli'],
 }
 
 
